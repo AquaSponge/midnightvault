@@ -1,0 +1,26 @@
+{
+	"object": "Attack",
+	"name": "Test Attack 1",
+	"type": 1,
+	"requires": [ "weaponBlade", "classRogue" ],
+	"attributes":
+	{
+		"maxHealth": 0,
+		"maxMagicks": 1,
+		"maxEnergy": 2,
+		"meleeAttack": 3,
+		"magickAttack": 4,
+		"meleeDodge": 5,
+		"psychicDodge": 6,
+		"armor": 7,
+		"psychicArmor": 8,
+	 	"agility": 9,
+	},
+	"stats":
+	{
+		"health": 2,
+		"magicks": 3,
+		"energy": 4,
+		"psyche": 5,
+	}
+}

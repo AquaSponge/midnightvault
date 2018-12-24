@@ -1,0 +1,96 @@
+Character has a list of attack objects. each Attack object must be "primed" before an attack. All the characters attributes, buffs and de-buffs are taken into account.
+
+--- Event Cascade -----------------------------------------------------------------------------------------------------------------
+
+1. Character creation
+2. Character Attack-list population (& initialization)
+
+3. Character Attack execution towards Victim
+	3.1 Character Attack Priming
+	3.2 Ch. Attack absorbtion by victim
+
+In the fist round of programming I will leave out buffs and de-buffs completely and create a system soely relying on Character attributes. Of course this is quite boring in this form, but it will do for now. Also no graphical (ncurses) representation of the game will created at this stage.
+
+Attack Dynamics:
+the attack event cascade has three injection sites where the damage/buff/debuff output towards the executor and victim may be altered, 
+plus the base attack which is set during attack initialization.
+	1. When an attack is triggered by a character, we call execute() on the attack object. Here we have the first level of attack modification,
+	in which:
+		1.1 the characters attributes are applied to the attack (priming).
+		1.2 the characters buffs and de-buffs are applied to the attack.
+	Additionally to the int atk[4] array, we pass a vector of de/buffs which are to affect the victim.
+	Also there are attacks which also affect the executor of the attack, we realize this by adding a 
+	buff to the attack which either causes the original executor to perform an attack upon himself,
+	or the victim to cast an attack on the victim.
+
+--- Buffs (aka status effects) --------------------------------------------------------------------------------------------------
+buffs have a time to live (ttl) value which is decremented each round. Once the ttl count down reaches zero, they expire and are 
+removed from the characters buff list. Alternatively, ttl can be equal to (-1), in which case the buff will only expire at the
+end of the battle. The list (vector of buffs) includes both buffs and debuffs.  
+	
+--- Ailments --------------------------------------------------------------------------------------------------------------------
+	Certain debuffs can give rise to ailments, which basically are persistent debuffs which last over multiple 
+battles and world-map turns. Some ailments will have a half-life (an exponentially decreasing probability 
+curve which is rolled every round to determine if the ailment is cured), others will need to be cured, 
+and yet others will be incurable. They reside in their own vector of ailments, separate from buffs.
+	A character can develop immunity or resistence to diseases he has been exposed to. Resistence can be aquired though
+vaccination. Vaccinations and cures can be produced by Characters with the
+
+--- Aptitudes -------------------------------------------------------------------------------------------------------------------
+analogous to ailments, aptitudes are persistent buffs. These too can have a half-life, but usually, unlike Ailments, are
+permanent. For now, there is no maximum number of aptitudes a character can have.
+	| (this might need revision, for the sake of 													[side-note]
+	| balancing, though looking at games such as The Binding of Isaac, over-powered characters still can be very fun to play,
+	| if it proportionally correlates to probability of acquirement. In other words, besides skill and game-knowledge, you need
+	| a good amount of positive RNG, for example in tboi, transforming into guppy requires the player to aquire three somewhat rare
+	| items. These items aren't good for much, and require the player to give up on other, potentially better items.)
+Aptitudes can be aquired through character specific quests. These quests can be revealed through certain character interactions
+during camping
+
+--- Camping ----------------------------------------------------------------------------------------------------------------------
+Characters have to rest after around 12 hours of in-game activity. A battle counts for about one game hour, though this varies,
+depending on the amount of rounds and RNG which will cause a variance of around (0.15). Certain ailments, aptitudes and medicines
+can alter the amount of rest and tiredness levels of characters. Depending on the camping conditions, the characters will 
+recouperate different amounts of rest (tiredness will drop).
+Factors that play a role during camping:
+	- duration of rest
+		the player can decide on the amount of hours that should be rested for + RNG
+	- camping equipment (CE)
+		E.g. bedrolls, tent, cooking-pot. All these items can be carried without using up inventory space
+		in a separate menu named »Camping Equipment«. Of each item-type, the party can carry one object.
+		The party is slowed down 1 point for each CE in the CE-inventory. This slow-down should far out-
+		weigh the benefits of camping however and the speed difference should only make up, at most
+		(-0.04) of the parties speed without the CE.
+	- Safety
+		This depends on the powress of the character on guard duty (if the player assigns guard duty) and on the environment
+		danger value
+	- Weather Conditions
+		Temperature, humidity, windspeed, rain/snow/hail
+
+During camping, the player can assign guard duty intervals for each party member. During guard duty the character will obviously
+gain no rest,  but give the other players a safety bonus, depending on their powress score, which in turn positively affects 
+their rest. Additionally guard duty may alert the party in the case of an ambush.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
